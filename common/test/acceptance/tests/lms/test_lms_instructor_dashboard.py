@@ -648,14 +648,15 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
 
         Given that I am an instructor
         And I visit the instructor dashboard's "Data Downloads" tab
-        And I click on the "Generate Grade Report" button
+        I select "Grade Report: All Learners" from the dropdown.
+        And then I click on the "Submit" button right next to the dropdown.
         Then a report should be generated
         And a report requested event should be emitted
         When I click on the report
         Then a report downloaded event should be emitted
         """
-        report_name = u"grade_report"
-        self.data_download_section.generate_grade_report_button.click()
+        report_name = "grade_report_all_learners"
+        self.data_download_section.generate_course_grade_report_for_all_learners()
         self.data_download_section.wait_for_available_report()
         self.verify_report_requested_event(report_name)
         self.verify_report_download(report_name)
@@ -666,14 +667,15 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
 
         Given that I am an instructor
         And I visit the instructor dashboard's "Data Downloads" tab
-        And I click on the "Generate Problem Grade Report" button
+        I select "Problem Report: All Learners" from the dropdown
+        And then I click on the "Submit" button right next to the dropdown.
         Then a report should be generated
         And a report requested event should be emitted
         When I click on the report
         Then a report downloaded event should be emitted
         """
-        report_name = u"problem_grade_report"
-        self.data_download_section.generate_problem_report_button.click()
+        report_name = "problem_grade_report_all_learners"
+        self.data_download_section.generate_problem_report_for_all_learners()
         self.data_download_section.wait_for_available_report()
         self.verify_report_requested_event(report_name)
         self.verify_report_download(report_name)
@@ -684,11 +686,12 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
 
         Given that I am an instructor
         And I visit the instructor dashboard's "Data Downloads" tab
-        And I click on the "Download ORA2 Responses" button
+        I select "ORA Data Report" from the dropdown.
+        And then I click on the "Submit" button right next to the dropdown.
         Then a report should be generated
         """
-        report_name = u"ORA_data"
-        self.data_download_section.generate_ora2_response_report_button.click()
+        report_name = "ORA_data"
+        self.data_download_section.generate_ora2_response_report()
         self.data_download_section.wait_for_available_report()
         self.verify_report_download(report_name)
 

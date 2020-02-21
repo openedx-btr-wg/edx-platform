@@ -1100,6 +1100,11 @@ class DataDownloadPage(PageObject):
         return self.q(css='input[name=list-profiles]')
 
     @property
+    def submit_grade_report_button(self):
+        """Returns the "Submit" grade report button."""
+        return self.q(css='input[name="submit-grade-report"]')
+
+    @property
     def enrolled_student_profile_button_present(self):
         """
         Checks for the presence of Enrolled Student Profile Button
@@ -1114,32 +1119,51 @@ class DataDownloadPage(PageObject):
         return self.q(css='input[name="dump-gradeconf"]')
 
     @property
-    def generate_grade_report_button(self):
-        """
-        Returns the "Generate Grade Report" button.
-        """
-        return self.q(css='input[name=calculate-grades-csv]')
-
-    @property
-    def generate_problem_report_button(self):
-        """
-        Returns the "Generate Problem Grade Report" button.
-        """
-        return self.q(css='input[name=problem-grade-report]')
-
-    @property
     def report_download_links(self):
         """
         Returns the download links for the current page.
         """
         return self.q(css="#report-downloads-table .file-download-link>a")
 
-    @property
-    def generate_ora2_response_report_button(self):
+    def generate_course_grade_report_for_all_learners(self):
         """
-        Returns the ORA2 response download button for the current page.
+        Select Grade report for all learners from the dropdown and return submit report button.
         """
-        return self.q(css='input[name=export-ora2-data]')
+        self.select_report_from_dropdown(report_name='calculate-grades-csv')
+        return self.submit_grade_report_button.click()
+
+    def generate_course_grade_report_for_verified_learners(self):
+        """
+        Select Grade report for verified learners from the dropdown and return submit report button.
+        """
+        self.select_report_from_dropdown(report_name='calculate-grades-csv-verified')
+        return self.submit_grade_report_button.click()
+
+    def generate_problem_report_for_all_learners(self):
+        """
+        Select Problem report for all learners from the dropdown and return submit report button.
+        """
+        self.select_report_from_dropdown(report_name='problem-grade-report')
+        return self.submit_grade_report_button.click()
+
+    def generate_problem_report_for_verified_learners(self):
+        """
+        Select Problem report for verified learners from the dropdown and return submit report button.
+        """
+        self.select_report_from_dropdown(report_name='problem-grade-report-verified')
+        return self.submit_grade_report_button.click()
+
+    def generate_ora2_response_report(self):
+        """
+        Select ORA2 data report from the dropdown and return submit report button.
+        """
+        self.select_report_from_dropdown(report_name='export-ora2-data')
+        return self.submit_grade_report_button
+
+    def select_report_from_dropdown(self, report_name):
+        """Selects the specified report from the dropdown of grade reports."""
+        reports_select = self.q(css='#grade-reports')
+        select_option_by_text(reports_select, report_name)
 
     def wait_for_available_report(self):
         """

@@ -232,7 +232,7 @@ def select_option_by_text(select_browser_query, option_text, focus_out=False):
         """ Get the first select element that matches the query and select the desired value. """
         try:
             select = Select(query.first.results[0])
-            select.select_by_visible_text(value)
+            select.select_by_value(value)
             if focus_out:
                 query.first.results[0].send_keys(Keys.TAB)
             return True
