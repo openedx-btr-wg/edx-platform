@@ -319,7 +319,7 @@
                     }
                 });
             });
-            this.$async_report_submit_btn.click(function (){
+            this.$async_report_submit_btn.click(function() {
                 var errorMessage = '';
                 var requestData = {};
                 var selectedOption = dataDownloadObj.$grade_reports_selector.find(':selected');
@@ -412,11 +412,9 @@
             var errorMessage = '';
             if (targetName === 'calculate-grades-csv') {
                 errorMessage = gettext('Error generating grades. Please try again.');
-            }
-            else if (targetName === 'problem-grade-report') {
+            } else if (targetName === 'problem-grade-report') {
                 errorMessage = gettext('Error generating problem grade report. Please try again.');
-            }
-            else if (targetName === 'export-ora2-data') {
+            } else if (targetName === 'export-ora2-data') {
                 errorMessage = gettext('Error generating ORA data report. Please try again.');
             }
             return errorMessage;
