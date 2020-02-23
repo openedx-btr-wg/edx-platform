@@ -12,7 +12,8 @@ from bok_choy.page_object import PageObject
 from bok_choy.promise import EmptyPromise, Promise
 
 from common.test.acceptance.pages.lms.course_page import CoursePage
-from common.test.acceptance.tests.helpers import get_options, get_selected_option_text, select_option_by_text
+from common.test.acceptance.tests.helpers import get_options, get_selected_option_text, select_option_by_text, \
+    select_option_by_value
 
 
 class InstructorDashboardPage(CoursePage):
@@ -1163,7 +1164,7 @@ class DataDownloadPage(PageObject):
     def select_report_from_dropdown(self, report_name):
         """Selects the specified report from the dropdown of grade reports."""
         reports_select = self.q(css='#grade-reports')
-        select_option_by_text(reports_select, report_name)
+        select_option_by_value(reports_select, report_name)
 
     def wait_for_available_report(self):
         """
