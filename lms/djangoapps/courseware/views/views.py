@@ -95,7 +95,7 @@ from openedx.core.djangoapps.credit.api import (
     is_credit_course,
     is_user_eligible_for_credit
 )
-from openedx.core.djangoapps.enrollments.api import add_enrollment, get_enrollment
+from openedx.core.djangoapps.enrollments.api import add_enrollment, get_course_enrollment_details, get_enrollment
 from openedx.core.djangoapps.enrollments.permissions import ENROLL_IN_COURSE
 from openedx.core.djangoapps.models.course_details import CourseDetails
 from openedx.core.djangoapps.plugin_api.views import EdxFragmentView
@@ -1038,8 +1038,9 @@ def dates(request, course_id):
 
     course_key = CourseKey.from_string(course_id)
     course = get_course_with_access(request.user, 'load', course_key, check_if_enrolled=False)
-    course_date_blocks = get_course_date_blocks(course, request.user, request, include_past_dates=True)
-    learner_is_verified = get_enrollment(request.user.username, course_id)
+    course_date_blocks = get_course_date_blocks(course, request.user, request,
+                                                include_access=True, include_past_dates=True)
+    learner_is_verified = get_enrollment(request.user.username, course_id).get('mode') == 'verified'
 
     context = {
         'course': course,

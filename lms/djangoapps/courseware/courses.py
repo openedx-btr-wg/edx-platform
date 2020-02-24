@@ -396,7 +396,8 @@ def get_course_info_section(request, user, course, section_key):
     return html
 
 
-def get_course_date_blocks(course, user, request=None, include_past_dates=False, num_assignments=None):
+def get_course_date_blocks(course, user, request=None, include_access=False,
+                           include_past_dates=False, num_assignments=None):
     """
     Return the list of blocks to display on the course info page,
     sorted by date.
@@ -416,7 +417,7 @@ def get_course_date_blocks(course, user, request=None, include_past_dates=False,
         blocks.append(CourseExpiredDate(course, user))
         blocks.extend(get_course_assignment_due_dates(
             course, user, request, num_return=num_assignments,
-            include_past_dates=include_past_dates, include_access=True
+            include_access=include_access, include_past_dates=include_past_dates,
         ))
 
     return sorted((b for b in blocks if b.date and (b.is_enabled or include_past_dates)), key=date_block_key_fn)
@@ -448,7 +449,7 @@ def get_course_assignment_due_dates(course, user, request, num_return=None,
                 date_block.date = date
 
                 if include_access:
-                    date_block.requires_full_access = _requires_full_access(user, block_key)
+                    date_block.requires_full_access = _requires_full_access(store, user, block_key)
 
                 block_url = None
                 now = datetime.now().replace(tzinfo=pytz.UTC)
@@ -466,11 +467,10 @@ def get_course_assignment_due_dates(course, user, request, num_return=None,
     return date_blocks
 
 
-def _requires_full_access(user, block_key):
+def _requires_full_access(store, user, block_key):
     """
     Returns a boolean if any child of the block_key specified has a group_access array consisting of just full_access
     """
-    store = modulestore()
     child_block_keys = course_blocks_api.get_course_blocks(user, block_key)
     requires_full_access = False
     for child_block_key in child_block_keys:
@@ -481,6 +481,7 @@ def _requires_full_access(user, block_key):
             settings.CONTENT_TYPE_GATE_GROUP_IDS['full_access']
         ]):
             requires_full_access = True
+            break
     return requires_full_access
 
 
