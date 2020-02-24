@@ -1130,41 +1130,45 @@ class DataDownloadPage(PageObject):
         """
         Select Grade report for all learners from the dropdown and return submit report button.
         """
-        self.select_report_from_dropdown(report_name='calculate-grades-csv')
+        self.select_report_from_dropdown(report_value='calculate-grades-csv')
         return self.submit_grade_report_button.click()
 
     def generate_course_grade_report_for_verified_learners(self):
         """
         Select Grade report for verified learners from the dropdown and return submit report button.
         """
-        self.select_report_from_dropdown(report_name='calculate-grades-csv-verified')
+        self.select_report_from_dropdown(report_value='calculate-grades-csv-verified')
         return self.submit_grade_report_button.click()
 
     def generate_problem_report_for_all_learners(self):
         """
         Select Problem report for all learners from the dropdown and return submit report button.
         """
-        self.select_report_from_dropdown(report_name='problem-grade-report')
+        self.select_report_from_dropdown(report_value='problem-grade-report')
         return self.submit_grade_report_button.click()
 
     def generate_problem_report_for_verified_learners(self):
         """
         Select Problem report for verified learners from the dropdown and return submit report button.
         """
-        self.select_report_from_dropdown(report_name='problem-grade-report-verified')
+        self.select_report_from_dropdown(report_value='problem-grade-report-verified')
         return self.submit_grade_report_button.click()
 
     def generate_ora2_response_report(self):
         """
         Select ORA2 data report from the dropdown and return submit report button.
         """
-        self.select_report_from_dropdown(report_name='export-ora2-data')
-        return self.submit_grade_report_button
+        self.select_report_from_dropdown(report_value='export-ora2-data')
+        return self.submit_grade_report_button.click()
 
-    def select_report_from_dropdown(self, report_name):
+    def select_report_from_dropdown(self, report_value):
         """Selects the specified report from the dropdown of grade reports."""
         reports_select = self.q(css='#grade-reports')
-        select_option_by_value(reports_select, report_name)
+        select_option_by_value(reports_select, report_value)
+        expected_report_selected = self.q(css='#grade-reports option[value="{}"]'.format(report_value)).selected
+        EmptyPromise(
+            lambda: expected_report_selected is True, 'Grade report is set to {}'.format(report_value)
+        ).fulfill()
 
     def wait_for_available_report(self):
         """

@@ -642,9 +642,9 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
         self.verify_report_requested_event(report_name)
         self.verify_report_download(report_name)
 
-    def test_grade_report_download(self):
+    def test_grade_report_download_all_learners(self):
         """
-        Scenario: Verify that an instructor can download a grade report
+        Scenario: Verify that an instructor can download a grade report for all learners
 
         Given that I am an instructor
         And I visit the instructor dashboard's "Data Downloads" tab
@@ -661,9 +661,28 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
         self.verify_report_requested_event(report_name)
         self.verify_report_download(report_name)
 
-    def test_problem_grade_report_download(self):
+    def test_grade_report_download_verified_learners(self):
         """
-        Scenario: Verify that an instructor can download a problem grade report
+        Scenario: Verify that an instructor can download a grade report for verified learners.
+
+        Given that I am an instructor
+        And I visit the instructor dashboard's "Data Downloads" tab
+        I select "Grade Report: Verified Learners Only" from the dropdown.
+        And then I click on the "Submit" button right next to the dropdown.
+        Then a report should be generated
+        And a report requested event should be emitted
+        When I click on the report
+        Then a report downloaded event should be emitted
+        """
+        report_name = "grade_report_verified_learners"
+        self.data_download_section.generate_course_grade_report_for_verified_learners()
+        self.data_download_section.wait_for_available_report()
+        self.verify_report_requested_event(report_name)
+        self.verify_report_download(report_name)
+
+    def test_problem_grade_report_download_all_learners(self):
+        """
+        Scenario: Verify that an instructor can download a problem grade report for all learners.
 
         Given that I am an instructor
         And I visit the instructor dashboard's "Data Downloads" tab
@@ -676,6 +695,25 @@ class DataDownloadsTest(BaseInstructorDashboardTest):
         """
         report_name = "problem_grade_report_all_learners"
         self.data_download_section.generate_problem_report_for_all_learners()
+        self.data_download_section.wait_for_available_report()
+        self.verify_report_requested_event(report_name)
+        self.verify_report_download(report_name)
+
+    def test_problem_grade_report_download_verified_learners(self):
+        """
+        Scenario: Verify that an instructor can download a problem grade report for verified learners.
+
+        Given that I am an instructor
+        And I visit the instructor dashboard's "Data Downloads" tab
+        I select "Problem Report: Verified Learners Only" from the dropdown
+        And then I click on the "Submit" button right next to the dropdown.
+        Then a report should be generated
+        And a report requested event should be emitted
+        When I click on the report
+        Then a report downloaded event should be emitted
+        """
+        report_name = "problem_grade_report_verified_learners"
+        self.data_download_section.generate_problem_report_for_verified_learners()
         self.data_download_section.wait_for_available_report()
         self.verify_report_requested_event(report_name)
         self.verify_report_download(report_name)
